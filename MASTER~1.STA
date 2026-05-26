@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "1",
+  "_comment": "RTTG Drone Comms master config. Update the URL pilots have configured, edit this file, and within 24h every pilot picks it up. Or pilots click Sync now in Options for immediate effect.",
+  "_howToUse": "Host this file at a stable URL (GitHub raw, S3, etc.). Set settings.masterConfigUrl in the extension to this URL. The extension pulls on startup and applies any sections present here. Omit a section to leave pilots' local copy alone.",
+  "shiftBlocks": [
+    "0300-1100",
+    "1100-1900",
+    "1900-0300",
+    "0800-1800"
+  ],
+  "missions": [
+    "Perimeter Sweep \u2014 North",
+    "Perimeter Sweep \u2014 South",
+    "Crowd Monitoring",
+    "Search & Rescue Support",
+    "Traffic Observation",
+    "Asset Inspection",
+    "Training Sortie"
+  ],
+  "chats": [
+    {
+      "id": "EXAMPLE-replace-me",
+      "name": "Client A \u2014 Patrol Ops",
+      "url": "https://chat.google.com/app/chat/REPLACE_WITH_REAL_SPACE_ID"
+    }
+  ],
+  "settings": {
+    "confirmBeforeQuickFire": true,
+    "alertOnNewMessage": true,
+    "autoFallbackToClipboard": true
+  },
+  "bugWebhookUrl": "",
+  "_templatesNote": "Templates omitted from this starter \u2014 to push templates from this file, use the 'Export current as master.json' button in Options after you have the templates configured how you like, then copy the templates array into here."
+}
