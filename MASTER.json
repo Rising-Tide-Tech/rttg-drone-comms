@@ -1,34 +1,503 @@
 {
   "schemaVersion": "1",
-  "_comment": "RTTG Drone Comms master config. Update the URL pilots have configured, edit this file, and within 24h every pilot picks it up. Or pilots click Sync now in Options for immediate effect.",
-  "_howToUse": "Host this file at a stable URL (GitHub raw, S3, etc.). Set settings.masterConfigUrl in the extension to this URL. The extension pulls on startup and applies any sections present here. Omit a section to leave pilots' local copy alone.",
+  "exportedAt": "2026-05-27T16:28:51.114Z",
+  "templates": [
+    {
+      "category": "operational",
+      "fields": [
+        {
+          "key": "shift_block",
+          "label": "Shift",
+          "required": true,
+          "type": "shift-dropdown"
+        },
+        {
+          "key": "pilot_phone",
+          "label": "Pilot Phone",
+          "required": true,
+          "type": "profile-phone"
+        }
+      ],
+      "format": "*DRONE SHIFT FLYING*\nPreflight check OK.\nRequesting SOC Approval for {{shift_block}}\nPilot Contact # {{pilot_phone}}",
+      "id": "1",
+      "locked": true,
+      "name": "DRONE SHIFT FLYING",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "operational",
+      "fields": [
+        {
+          "key": "mission_name",
+          "label": "Mission Name",
+          "required": true,
+          "type": "mission-dropdown"
+        }
+      ],
+      "format": "*Patrol Flying*\nPreflight check OK.\n{{mission_name}}",
+      "id": "2",
+      "locked": false,
+      "name": "Patrol Flying",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "alert",
+      "fields": [
+        {
+          "key": "shift_block",
+          "label": "Shift",
+          "required": true,
+          "type": "shift-dropdown"
+        },
+        {
+          "key": "reason",
+          "label": "Reason",
+          "options": [
+            "Weather",
+            "Tech Issues",
+            "Other"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "reason_detail",
+          "label": "Reason Detail (if Other)",
+          "required": false,
+          "type": "text"
+        }
+      ],
+      "format": "*DRONE SHIFT NOT FLYING*\nSOC be aware Drones are Not flying this shift ({{shift_block}})\nReason: {{reason}}{{reason_detail_suffix}}",
+      "id": "3",
+      "locked": false,
+      "name": "DRONE SHIFT NOT FLYING",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "alert",
+      "fields": [
+        {
+          "key": "reason",
+          "label": "Reason",
+          "options": [
+            "Weather",
+            "Tech Issues",
+            "Other"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "reason_detail",
+          "label": "Reason Detail (if Other)",
+          "required": false,
+          "type": "text"
+        },
+        {
+          "key": "next_update",
+          "label": "Next Update",
+          "required": true,
+          "type": "duration"
+        }
+      ],
+      "format": "*DRONE NOT FLYING*\nSOC be aware Drones are Not flying for an hour\nReason: {{reason}}{{reason_detail_suffix}}\nWill update {{next_update}}",
+      "id": "4",
+      "locked": false,
+      "name": "DRONE NOT FLYING",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "alert",
+      "fields": [
+        {
+          "key": "poc",
+          "label": "POC",
+          "options": [
+            "ASOC",
+            "GSM",
+            "Program Team",
+            "Other"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "poc_detail",
+          "label": "POC Detail (if Other)",
+          "required": false,
+          "type": "text"
+        }
+      ],
+      "format": "*STOP DRONE FLYING REQUEST BY SOC*\nPer POC: {{poc}}{{poc_detail_suffix}}",
+      "id": "5",
+      "locked": false,
+      "name": "STOP DRONE FLYING REQUEST BY SOC",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "operational",
+      "fields": [
+        {
+          "key": "poc",
+          "label": "POC",
+          "options": [
+            "ASOC",
+            "GSM",
+            "Program Team",
+            "Other"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "poc_detail",
+          "label": "POC Detail (if Other)",
+          "required": false,
+          "type": "text"
+        }
+      ],
+      "format": "*RESUME DRONE FLYING REQUEST BY SOC*\nPer POC: {{poc}}{{poc_detail_suffix}}",
+      "id": "6",
+      "locked": false,
+      "name": "RESUME DRONE FLYING REQUEST BY SOC",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "request",
+      "fields": [
+        {
+          "key": "priority",
+          "label": "Priority",
+          "options": [
+            "0",
+            "1",
+            "2",
+            "3"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "location",
+          "label": "Location (map grid)",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "reason",
+          "label": "Reason",
+          "required": true,
+          "type": "textarea"
+        },
+        {
+          "key": "timing",
+          "label": "Timing",
+          "placeholder": "ASAP or HH:MM",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "constraints",
+          "label": "Constraints",
+          "placeholder": "no-fly / privacy / keep-out",
+          "required": false,
+          "type": "text"
+        },
+        {
+          "key": "outcome",
+          "label": "Requested Outcome",
+          "required": true,
+          "type": "textarea"
+        }
+      ],
+      "format": "*AdHoc FLIGHT REQUEST*\n• Priority: {{priority}}\n• Location: {{location}}\n• Reason: {{reason}}\n• Timing: {{timing}}\n• Constraints: {{constraints}}\n• Requested outcome: {{outcome}}",
+      "id": "7",
+      "locked": false,
+      "name": "AdHoc FLIGHT REQUEST",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "alert",
+      "fields": [
+        {
+          "key": "issue",
+          "label": "Issue",
+          "options": [
+            "Dock Offline",
+            "Failed to Launch",
+            "Failed to Charge",
+            "Other"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "issue_detail",
+          "label": "Issue Detail (if Other)",
+          "required": false,
+          "type": "text"
+        },
+        {
+          "key": "ops_paused",
+          "label": "Ops Paused?",
+          "options": [
+            "Yes",
+            "No"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "current_state",
+          "label": "Current State",
+          "placeholder": "what you see",
+          "required": true,
+          "type": "textarea"
+        },
+        {
+          "key": "next_steps",
+          "label": "Next Steps",
+          "options": [
+            "Escalated",
+            "Troubleshooting"
+          ],
+          "required": true,
+          "type": "dropdown"
+        },
+        {
+          "key": "eta",
+          "label": "ETA to Update",
+          "required": true,
+          "type": "duration"
+        }
+      ],
+      "format": "*SERVICE ISSUE*\n• Issue: {{issue}}{{issue_detail_suffix}}\n• Impact: ops paused? {{ops_paused}}\n• Current state: {{current_state}}\n• Next steps: {{next_steps}}\n• ETA to update: {{eta}}",
+      "id": "8",
+      "locked": true,
+      "name": "SERVICE ISSUE",
+      "override": "",
+      "version": 1
+    },
+    {
+      "alwaysConfirm": true,
+      "category": "alert",
+      "fields": [
+        {
+          "key": "what_happened",
+          "label": "What Happened",
+          "placeholder": "describe what occurred",
+          "required": true,
+          "type": "textarea"
+        },
+        {
+          "key": "location",
+          "label": "Location",
+          "placeholder": "address / map link",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "safety_status",
+          "label": "Safety Status",
+          "placeholder": "injury? fire?",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "actions_taken",
+          "label": "Actions Taken",
+          "placeholder": "911 called / area secured",
+          "required": true,
+          "type": "textarea"
+        },
+        {
+          "default": "pause all flights",
+          "key": "ops_status",
+          "label": "Ops Status",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "next_update",
+          "label": "Next Update",
+          "required": true,
+          "type": "duration"
+        }
+      ],
+      "format": "*CRITICAL INCIDENT (PRIORITY 0)*\n• What happened: {{what_happened}}\n• Location: {{location}}\n• Safety status: {{safety_status}}\n• Actions taken: {{actions_taken}}\n• Ops status: {{ops_status}}\n• Next update: {{next_update}}",
+      "id": "9",
+      "locked": true,
+      "name": "CRITICAL INCIDENT (PRIORITY 0)",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "request",
+      "fields": [
+        {
+          "key": "what_happened",
+          "label": "What Happened",
+          "placeholder": "Security Observation from List",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "location",
+          "label": "Location",
+          "placeholder": "address / map link",
+          "required": true,
+          "type": "text"
+        }
+      ],
+      "format": "*Security INCIDENT (PRIORITY 0-1)*\n• What happened: {{what_happened}}\n• Location: {{location}}",
+      "id": "10",
+      "locked": false,
+      "name": "Security INCIDENT (PRIORITY 0-1)",
+      "override": "",
+      "version": 1
+    },
+    {
+      "category": "request",
+      "color": "#ffc107",
+      "fields": [
+        {
+          "key": "what_was_seen",
+          "label": "What Was Seen",
+          "required": true,
+          "type": "textarea"
+        },
+        {
+          "key": "location_link",
+          "label": "Location",
+          "placeholder": "Paste Google Maps Link Here",
+          "required": true,
+          "type": "text"
+        },
+        {
+          "key": "screenshot_marker",
+          "label": "Screenshot of Observation",
+          "required": false,
+          "type": "screenshot-paste"
+        }
+      ],
+      "format": "*OBSERVATION REPORT*\n• What Was Seen: {{what_was_seen}}\n• Location: {{location_link}}\n• Screen Shot of observation: {{screenshot_marker}}",
+      "id": "11",
+      "locked": false,
+      "name": "OBSERVATION REPORT",
+      "override": "",
+      "version": 1
+    }
+  ],
+  "chats": [
+    {
+      "id": "sc-1779830773598",
+      "name": "MNK",
+      "url": "https://chat.google.com/app/chat/AAQAB4JRKko"
+    },
+    {
+      "id": "sc-1779836829205",
+      "name": "DLS",
+      "url": "https://chat.google.com/app/chat/AAQAB4JRKko"
+    },
+    {
+      "id": "sc-1779836873973",
+      "name": "SPC",
+      "url": "https://chat.google.com/app/chat/AAQAGMjy7vU"
+    },
+    {
+      "id": "sc-1779836889765",
+      "name": "PRY",
+      "url": "https://chat.google.com/app/chat/AAQAlXqbLOA"
+    },
+    {
+      "id": "sc-1779836910933",
+      "name": "WCK",
+      "url": "https://chat.google.com/app/chat/AAQAQz3Qt-Q"
+    },
+    {
+      "id": "sc-1779836952645",
+      "name": "***RPIC COMMS (TRAINING)***",
+      "url": "https://chat.google.com/app/chat/AAQAobmNzKE"
+    },
+    {
+      "id": "sc-comms-testing",
+      "name": "***Comm's TESTING ***",
+      "url": "https://chat.google.com/app/chat/AAQA5LGFRdc"
+    }
+  ],
+  "missions": [
+    "Traffic Observation",
+    "Asset Inspection",
+    "Training Sortie",
+    "Patrol",
+    "Perimeter"
+  ],
   "shiftBlocks": [
     "0300-1100",
     "1100-1900",
     "1900-0300",
     "0800-1800"
   ],
-  "missions": [
-    "Perimeter Sweep \u2014 North",
-    "Perimeter Sweep \u2014 South",
-    "Crowd Monitoring",
-    "Search & Rescue Support",
-    "Traffic Observation",
-    "Asset Inspection",
-    "Training Sortie"
-  ],
-  "chats": [
-    {
-      "id": "EXAMPLE-replace-me",
-      "name": "Client A \u2014 Patrol Ops",
-      "url": "https://chat.google.com/app/chat/REPLACE_WITH_REAL_SPACE_ID"
-    }
-  ],
   "settings": {
-    "confirmBeforeQuickFire": true,
-    "alertOnNewMessage": true,
-    "autoFallbackToClipboard": true
+    "confirmBeforeQuickFire": false,
+    "autoFallbackToClipboard": true,
+    "alertOnNewMessage": false
   },
-  "bugWebhookUrl": "",
-  "_templatesNote": "Templates omitted from this starter \u2014 to push templates from this file, use the 'Export current as master.json' button in Options after you have the templates configured how you like, then copy the templates array into here."
+  "selectors": {
+    "active_conversation": [
+      {
+        "id": "conv-by-role",
+        "selector": "[role=\"main\"]",
+        "strategy": "main-role"
+      },
+      {
+        "id": "conv-by-class",
+        "selector": "main",
+        "strategy": "main-tag"
+      }
+    ],
+    "composer": [
+      {
+        "id": "composer-by-role",
+        "selector": "[role=\"textbox\"][contenteditable=\"true\"]",
+        "strategy": "role+contenteditable"
+      },
+      {
+        "id": "composer-by-aria",
+        "selector": "[aria-label*=\"Message\"][contenteditable=\"true\"]",
+        "strategy": "aria-label-message"
+      },
+      {
+        "id": "composer-by-jslog",
+        "selector": "div[jsname][contenteditable=\"true\"]",
+        "strategy": "jsname-fallback"
+      }
+    ],
+    "selectors_version": "2026.05.25",
+    "send_button": [
+      {
+        "id": "send-by-aria",
+        "selector": "[aria-label=\"Send message\"]",
+        "strategy": "aria-label-send"
+      },
+      {
+        "id": "send-by-aria-loose",
+        "selector": "button[aria-label*=\"Send\"]",
+        "strategy": "aria-label-loose"
+      },
+      {
+        "id": "send-by-data",
+        "selector": "button[data-tooltip*=\"Send\"]",
+        "strategy": "data-attr"
+      }
+    ]
+  },
+  "bugWebhookUrl": "https://hooks.slack.com/services/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"
 }
